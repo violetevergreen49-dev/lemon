@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Sir!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Quicksand:wght@400;600;700&family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #87CEEB 0%, #DDA0DD 100%);
+            color: #333;
+            font-family: 'Quicksand', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Matrix Background - VISIBLE */
+        #matrixCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            opacity: 0.15;
+        }
+
+        /* Confetti Container */
+        .confetti-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 3;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #D896D8;
+            pointer-events: none;
+            animation: confetti-fall linear forwards;
+        }
+
+        @keyframes confetti-fall {
+            0% {
+                opacity: 1;
+                transform: translateY(-10px) rotateZ(0deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(100vh) rotateZ(720deg);
+            }
+        }
+
+        .container {
+            position: relative;
+            z-index: 2;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .section {
+            margin-bottom: 60px;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        .section:nth-child(1) { animation-delay: 0.1s; }
+        .section:nth-child(2) { animation-delay: 0.3s; }
+        .section:nth-child(3) { animation-delay: 0.5s; }
+        .section:nth-child(4) { animation-delay: 0.7s; }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 50px 20px;
+            background: linear-gradient(135deg, #FFFAF0 0%, #FFFEF5 100%);
+            border: 3px solid #D896D8;
+            border-radius: 20px;
+            margin-bottom: 50px;
+            box-shadow: 0 8px 32px rgba(216, 150, 216, 0.3);
+        }
+
+        .title {
+            font-size: 4em;
+            font-weight: 900;
+            font-family: 'Playfair Display', serif;
+            background: linear-gradient(135deg, #FF6EC7 0%, #D896D8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+            animation: bounce 2s infinite;
+            letter-spacing: 2px;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .section-title {
+            font-size: 2.8em;
+            font-family: 'Playfair Display', serif;
+            color: #B366B3;
+            margin-bottom: 30px;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 0 2px 4px rgba(255, 255, 255, 0.5);
+            font-weight: 700;
+        }
+
+        /* Gallery - Portrait Photo */
+        .gallery {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px;
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            border: 3px solid #D896D8;
+            width: 220px;
+            height: 400px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(216, 150, 216, 0.3);
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 25px rgba(216, 150, 216, 0.5);
+            border-color: #D896D8;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        /* Skills */
+        .skills-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .skill-card {
+            background: linear-gradient(135deg, #FFFAF0 0%, #FFF5FB 100%);
+            border: 3px solid #D896D8;
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(216, 150, 216, 0.2);
+        }
+
+        .skill-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(216, 150, 216, 0.3);
+            border-color: #D896D8;
+            background: linear-gradient(135deg, #FFF5FB 0%, #FFF0FB 100%);
+        }
+
+        .skill-icon {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .skill-title {
+            font-size: 1.3em;
+            color: #B366B3;
+            margin-bottom: 8px;
+            font-weight: 700;
+            font-family: 'Comfortaa', sans-serif;
+        }
+
+        .skill-description {
+            color: #666;
+            font-size: 0.95em;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 600;
+            line-height: 1.5;
+        }
+
+        /* Message Section */
+        .message-section {
+            background: linear-gradient(135deg, #FFFAF0 0%, #FFF5FB 100%);
+            border: 3px dashed #D896D8;
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(216, 150, 216, 0.2);
+        }
+
+        .message-box {
+            width: 100%;
+            min-height: 150px;
+            padding: 15px;
+            background: white;
+            border: 2px solid #D896D8;
+            border-radius: 8px;
+            background: linear-gradient(to bottom, white 0%, white 100%);
+            background-clip: padding-box;
+            color: #1E5F7E;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1em;
+            font-weight: 600;
+            resize: vertical;
+            transition: all 0.3s ease;
+        }
+
+        .message-box::placeholder {
+            color: #1E5F7E;
+        }
+
+        .message-box:focus {
+            outline: none;
+            background: #FFF5FB;
+            box-shadow: 0 0 20px rgba(216, 150, 216, 0.2);
+            border-color: #D896D8;
+            caret-color: transparent;
+        }
+
+        /* Success Message */
+        #successMsg {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(216, 150, 216, 0.1) 0%, rgba(216, 150, 216, 0.1) 100%);
+            border: 2px solid #D896D8;
+            border-radius: 12px;
+            color: #B366B3;
+            font-weight: 700;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.1em;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 30px 20px;
+            border-top: 3px solid #D896D8;
+            color: #666;
+            font-family: 'Comfortaa', sans-serif;
+            font-weight: 700;
+        }
+
+        @media (max-width: 600px) {
+            .title {
+                font-size: 2.5em;
+            }
+            .section-title {
+                font-size: 2em;
+            }
+            .gallery-item {
+                width: 180px;
+                height: 330px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="matrixCanvas"></canvas>
+    <div class="confetti-container" id="confettiContainer"></div>
+
+    <div class="container">
+        <!-- Hero Section -->
+        <section class="section">
+            <div class="hero">
+                <h1 class="title">HAPPY BIRTHDAY SIR!</h1>
+            </div>
+        </section>
+
+        <!-- Photo -->
+        <section class="section">
+            <div class="gallery">
+                <div class="gallery-item">
+                    <img src="xp.jpg.jpeg">
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills -->
+        <section class="section">
+            <h2 class="section-title">Guidance That Inspires Us</h2>
+            <div class="skills-container">
+                <div class="skill-card">
+                    <div class="skill-icon">💻</div>
+                    <div class="skill-title">Coding Expert</div>
+                    <div class="skill-description">You turn tricky code into something students can actually understand.</div>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-icon">🖥️</div>
+                    <div class="skill-title">Technology Master</div>
+                    <div class="skill-description">Computers, devices and logical gates finally make sense thanks to you, Sir.</div>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-icon">🎸</div>
+                    <div class="skill-title">Guitar Maestro</div>
+                    <div class="skill-description">Passion in every note</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Message -->
+        <section class="section">
+            <div class="message-section">
+                <textarea class="message-box" id="wishMessage" placeholder="Happy Birthday, Sir!&#10;You make ICT a truly fun subject to learn and your teaching techniques are incredibly helpful for us. Thank you for guiding us with patience and passion in every lesson.&#10;Wishing you good health, happiness, and many more years of leaving a positive impact on all those fortunate enough to learn from you, Sir."></textarea>
+                <div id="successMsg">Your wish has been sent! Happy Birthday Sir!</div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <section class="section">
+            <div class="footer">
+                <p style="color: #666;">Happy Birthday to an amazing teacher!</p>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // ===== CONFETTI ANIMATION =====
+        function createConfetti() {
+            const container = document.getElementById('confettiContainer');
+            const colors = ['#FF6EC7', '#D896D8', '#B366B3', '#87CEEB', '#FFD700', '#FF69B4'];
+            
+            // Create 80 confetti pieces
+            for (let i = 0; i < 80; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                
+                // Random position
+                const startX = Math.random() * window.innerWidth;
+                const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                const duration = 3 + Math.random() * 2; // 3-5 seconds
+                const delay = Math.random() * 0.5; // stagger animation
+                const xMovement = (Math.random() - 0.5) * 200; // random horizontal movement
+                
+                confetti.style.left = startX + 'px';
+                confetti.style.backgroundColor = randomColor;
+                confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+                confetti.style.animation = `confetti-fall ${duration}s linear ${delay}s forwards`;
+                
+                // Random size
+                const size = 5 + Math.random() * 10;
+                confetti.style.width = size + 'px';
+                confetti.style.height = size + 'px';
+                
+                container.appendChild(confetti);
+                
+                // Remove confetti after animation ends
+                setTimeout(() => {
+                    confetti.remove();
+                }, (duration + delay) * 1000);
+            }
+        }
+
+        // Trigger confetti on page load
+        window.addEventListener('load', () => {
+            setTimeout(createConfetti, 800);
+        });
+
+        // Trigger confetti when message is sent
+        function submitWish() {
+            const message = document.getElementById('wishMessage').value;
+            if (message.trim() === '') {
+                alert('Please write a birthday wish!');
+                return;
+            }
+
+            // Show confetti celebration!
+            createConfetti();
+            
+            document.getElementById('wishMessage').style.display = 'none';
+            document.getElementById('successMsg').style.display = 'block';
+        }
+
+        // ===== BINARY MATRIX BACKGROUND =====
+        const canvas = document.getElementById('matrixCanvas');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const chars = '01';
+        const fontSize = 16;
+        const columns = canvas.width / fontSize;
+        const drops = [];
+
+        for (let i = 0; i < columns; i++) {
+            drops[i] = Math.random() * 10;
+        }
+
+        let frameCounter = 0;
+
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.08)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = '#D896D8';
+            ctx.font = 'bold ' + fontSize + 'px monospace';
+
+            if (frameCounter % 3 === 0) {
+                for (let i = 0; i < drops.length; i++) {
+                    const text = chars[Math.floor(Math.random() * chars.length)];
+                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+                    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                        drops[i] = 0;
+                    }
+                    drops[i]++;
+                }
+            }
+            frameCounter++;
+        }
+
+        function animateMatrix() {
+            drawMatrix();
+            requestAnimationFrame(animateMatrix);
+        }
+
+        animateMatrix();
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+    </script>
+</body>
+</html>
